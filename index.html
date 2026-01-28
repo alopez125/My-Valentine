@@ -37,7 +37,6 @@
         font-size: 2.5rem;
         margin-bottom: 10px;
       }
-
       .subtitle {
         color: #7a5c5c;
         font-size: 1.2rem;
@@ -54,11 +53,11 @@
       .buttons {
         margin-top: 35px;
         display: flex;
-        gap: 20px;
-        justify-content: center;
+        flex-direction: column; /* Stack vertically by default for mobile */
         align-items: center;
-        width: 100%;
-        min-height: 60px;
+        gap: 20px;
+        position: relative;
+        min-height: 150px; /* Give space for the No button to sit below */
       }
 
       button {
@@ -75,20 +74,19 @@
       #yesBtn {
         background-color: #ff4d6d;
         color: white;
+        z-index: 2;
       }
+
       #noBtn {
         background-color: #8d8d8d;
         color: white;
         position: absolute;
+        top: 80px; /* Starts below the Yes button */
         transition: 0.1s ease;
       }
 
       #success-msg {
         display: none;
-      }
-      .dimsum-decor {
-        font-size: 2rem;
-        margin: 10px;
       }
     </style>
   </head>
@@ -102,7 +100,12 @@
 
       <div class="buttons">
         <button id="yesBtn" onclick="accepted()">YES</button>
-        <button id="noBtn" onmouseover="moveNo()" onclick="cheatDetection()">
+        <button
+          id="noBtn"
+          onmouseover="moveNo()"
+          ontouchstart="moveNo()"
+          onclick="cheatDetection()"
+        >
           No
         </button>
       </div>
@@ -113,14 +116,18 @@
         <img src="assets/bao.gif" alt="Yay!" />
       </div>
       <h1>Yay! I knew you'd say yes! 🥰 ❤️</h1>
-      <p class="subtitle">Dinner on me Friday the 13!</p>
+      <p class="subtitle">Dinner on me Friday the 13th!</p>
     </div>
 
     <script>
       function moveNo() {
         const noBtn = document.getElementById("noBtn");
-        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+        // Random position within the window, keeping 50px away from edges
+        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
+        const y =
+          Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
+
         noBtn.style.left = `${x}px`;
         noBtn.style.top = `${y}px`;
       }
